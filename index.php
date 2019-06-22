@@ -239,8 +239,8 @@ function fillInSubcategories(){
     
   </style>
   
-  <script type='text/javascript' src='js/jquery.1.8.3.js'></script>
-  <script type='text/javascript' src='js/jquery-ui.js'></script>
+  <script type='text/javascript' src='js/jquery.3.4.1.js'></script>
+  <script type='text/javascript' src='js/jquery-ui.1.12.1.js'></script>
   <script type='text/javascript' src='js/jquery.bxslider.min.js'></script>
   <script type='text/javascript' src='js/slimscroll.js'></script>
   <script type='text/javascript' src='js/functions.js'></script>
@@ -313,10 +313,11 @@ function fillInSubcategories(){
     <div id="LBAdv3"></div>
   </div>
   
-  <div id="middleBlockMainButtons">
-    <div id="categoriesWord" onmouseout="hideCategories(this,event);"><span id="categoriesWordSpan" onclick="showCategories();">Categories</span></div>
-    <? if(AskAQuestionButton::$button != NULL){ print(AskAQuestionButton::$button); } ?>
-  </div>
+	<? if(MiddleBlockMainButtons::$sectionFirstPart != NULL){ print(MiddleBlockMainButtons::$sectionFirstPart); } ?>
+	  <!-- <div id="wrCategoriesButton" onmouseout="hideCategories(this,event);"><span id="categoriesButton" onclick="showCategories();">Categories</span></div> -->
+		<? if(MiddleBlockMainButtons::$categoriesButton != NULL){ print(MiddleBlockMainButtons::$categoriesButton); } ?>
+    <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
+	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
   <div id="wrCategories">
     <div id="categories" onmouseout="hideCategories(this,event);"><? fillInCategories(); ?></div>
