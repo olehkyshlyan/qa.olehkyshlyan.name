@@ -16,6 +16,29 @@ jQuery(function(){
 		}
 	});
 	
+	var showCategories = function(){
+		var categories = jQuery("#categories");
+		var displayProperty = categories.css("display");
+		if(displayProperty == 'none'){
+			jQuery(categories).show('fade',250);
+			jQuery('#wrCategoriesButton').animate({backgroundColor: 'rgb(255,243,204)'},250);
+		}
+		else if(displayProperty == 'block'){
+			jQuery(categories).hide('fade',250);
+			jQuery('#wrCategoriesButton').animate({backgroundColor: 'rgb(255,255,240)'},250);
+		}
+	}
+	jQuery("#categoriesButton").on('click',showCategories);
+	
+	var hideCategories = function(event){
+		var rel = event.relatedTarget;
+		if(rel.id != 'wrCategoriesButton' && rel.id != 'categoriesButton' && rel.id != 'categories' && rel.className != 'categories' && rel.className != 'categorieslink'){
+			jQuery('#categories').hide('fade',250);
+			jQuery('#wrCategoriesButton').animate({backgroundColor: 'rgb(255,255,240)'},250);
+		}
+	}
+	jQuery("#wrCategoriesButton, #categories").on('mouseout',hideCategories);
+	
 });
 
 (function(){
@@ -66,30 +89,6 @@ function sldn500(id){
 
 function slup500(id){
   jQuery('#'+id).slideUp({duration:500});
-}
-
-function showCategories(){
-  var element = document.getElementById('categories');
-  var style = element.currentStyle || window.getComputedStyle(element, null);
-  if(style.display == 'none'){
-    jQuery('#categories').show('fade',250);
-	jQuery('#categoriesWord').animate({backgroundColor: 'rgb(255,243,204)'},250);
-  }
-  else if(style.display == 'block'){
-    jQuery('#categories').hide('fade',250);
-	jQuery('#categoriesWord').animate({backgroundColor: 'rgb(255,255,240)'},250);
-  }
-}
-
-function hideCategories(th,event)
-{
-var related = event.relatedTarget || event.toElement;
-
-if(related.id != 'categoriesWord' && related.id != 'categoriesWordSpan' && related.id != 'categories' && related.className != 'categories' && related.className != 'categorieslink')
-{
-jQuery('#categories').hide('fade',250);
-jQuery('#categoriesWord').animate({backgroundColor: 'rgb(255,255,240)'},250);
-}
 }
 
 function qdqshowmore(h){
