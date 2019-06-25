@@ -314,13 +314,12 @@ function fillInSubcategories(){
   </div>
   
 	<? if(MiddleBlockMainButtons::$sectionFirstPart != NULL){ print(MiddleBlockMainButtons::$sectionFirstPart); } ?>
-	  <!-- <div id="wrCategoriesButton" onmouseout="hideCategories(this,event);"><span id="categoriesButton" onclick="showCategories();">Categories</span></div> -->
 		<? if(MiddleBlockMainButtons::$categoriesButton != NULL){ print(MiddleBlockMainButtons::$categoriesButton); } ?>
     <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
 	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
   <div id="wrCategories">
-    <div id="categories" onmouseout="hideCategories(this,event);"><? fillInCategories(); ?></div>
+    <div id="categories"><? fillInCategories(); ?></div>
   </div>
   
   <? if(!isset($_SESSION['euser'])){ ?><div id="aaqmsg"></div><? } ?>
