@@ -199,11 +199,13 @@ $prevten = $tenRow-9;
 //print('$prevten: '.$prevten.'<br/ >');
 
 // функция заполнения выпадающего diva категориями
+/*
 function fillInCategories(){
   global $categories;
   foreach($categories as $k=>$v)
   { print('<span class="categories"><a href="index.php?category='.$k.'" class="categorieslink">'.$v.'</a></span>'); }
 }
+*/
 
 // функция заполнения diva субкатегориями после выбора категории
 function fillInSubcategories(){
@@ -318,12 +320,13 @@ function fillInSubcategories(){
     <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
 	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
-  <div id="wrCategories">
-    <div id="categories"><? fillInCategories(); ?></div>
-  </div>
+  <!-- <div id="wrCategories"> -->
+    <!-- <div id="categories"><? /*fillInCategories();*/ ?></div>--->
+  <!-- </div> -->
+	<? if($categories->categoriesSection != NULL){ print($categories->categoriesSection); } ?>
   
   <? if(!isset($_SESSION['euser'])){ ?><div id="aaqmsg"></div><? } ?>
-  
+
   <div id="MBCatHistory">
   <a href="index.php" id="MBAllCat" class="MBCatElem">Main page</a>
 	<? if(isset($category)){ if($category == 'other'){ ?>
