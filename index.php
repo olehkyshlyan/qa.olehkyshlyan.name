@@ -59,7 +59,7 @@ if(isset($_GET['category'])){
   $cat = mb_strtolower($cat,'UTF-8');
   $cat = preg_replace('/[^a-z]/i','',$cat);
   if(is_string($cat)){
-	if(isset($categories[$cat])){
+	if(isset(Categories\Categories::CATEGORIES[$cat])){
 	  $category = $cat;
 	}
   }
@@ -198,15 +198,6 @@ $nextten = $tenRow+11;
 $prevten = $tenRow-9;
 //print('$prevten: '.$prevten.'<br/ >');
 
-// функция заполнения выпадающего diva категориями
-/*
-function fillInCategories(){
-  global $categories;
-  foreach($categories as $k=>$v)
-  { print('<span class="categories"><a href="index.php?category='.$k.'" class="categorieslink">'.$v.'</a></span>'); }
-}
-*/
-
 // функция заполнения diva субкатегориями после выбора категории
 function fillInSubcategories(){
   global $category; global $subcategories;
@@ -320,9 +311,6 @@ function fillInSubcategories(){
     <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
 	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
-  <!-- <div id="wrCategories"> -->
-    <!-- <div id="categories"><? /*fillInCategories();*/ ?></div>--->
-  <!-- </div> -->
 	<? if($categories->categoriesSection != NULL){ print($categories->categoriesSection); } ?>
   
   <? if(!isset($_SESSION['euser'])){ ?><div id="aaqmsg"></div><? } ?>
@@ -332,7 +320,7 @@ function fillInSubcategories(){
 	<? if(isset($category)){ if($category == 'other'){ ?>
 	<span>> </span><span><? print($categories[$category]); ?></span>
 	<? }else{ ?>
-	<span>> </span><a href="index.php?category=<? print($category); ?>" class="MBCatElem"><? print($categories[$category]); ?></a>
+	<span>> </span><a href="index.php?category=<? print($category); ?>" class="MBCatElem"><? print(Categories\Categories::CATEGORIES[$category]); ?></a>
 	<? }} ?>
 	<? if(isset($subcategory)){ ?>
 	<span>> </span><span><? print($subcategories[$category][$subcategory]); ?></span>
