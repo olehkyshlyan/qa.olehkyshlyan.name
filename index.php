@@ -71,7 +71,8 @@ if(isset($_GET['subcategory'])){
   $subcat = mb_strtolower($subcat,'UTF-8');
   $subcat = preg_replace('/[^a-z-]/i','',$subcat);
   if(is_string($subcat)){
-  if(isset($subcategories[$category][$subcat])){
+  //if(isset($subcategories[$category][$subcat])){
+  if(isset(Subcategories\Subcategories::SUBCATEGORIES[$category][$subcat])){
 	$subcategory = $subcat;
   }
   }
@@ -202,7 +203,8 @@ $prevten = $tenRow-9;
 function fillInSubcategories(){
   global $category; global $subcategories;
   if(isset($category) && $category != 'other')
-  foreach($subcategories[$category] as $k=>$v)
+  //foreach($subcategories[$category] as $k=>$v)
+  foreach(Subcategories\Subcategories::SUBCATEGORIES[$category] as $k=>$v)
   { print('<span class="subcategories"><a href="index.php?category='.$category.'&subcategory='.$k.'" class="categorieslink">'.$v.'</a></span>'); }
 }
 
@@ -311,7 +313,7 @@ function fillInSubcategories(){
     <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
 	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
-	<? if($categories->categoriesSection != NULL){ print($categories->categoriesSection); } ?>
+	<? if($categories->topSectionCategories != NULL){ print($categories->topSectionCategories); } ?>
   
   <? if(!isset($_SESSION['euser'])){ ?><div id="aaqmsg"></div><? } ?>
 
@@ -323,7 +325,7 @@ function fillInSubcategories(){
 	<span>> </span><a href="index.php?category=<? print($category); ?>" class="MBCatElem"><? print(Categories\Categories::CATEGORIES[$category]); ?></a>
 	<? }} ?>
 	<? if(isset($subcategory)){ ?>
-	<span>> </span><span><? print($subcategories[$category][$subcategory]); ?></span>
+	<span>> </span><span><? print(Subcategories\Subcategories::SUBCATEGORIES[$category][$subcategory]); ?></span>
 	<? } ?>
   </div>
   
@@ -408,8 +410,9 @@ function fillInSubcategories(){
 	
   </div>
   
-  <div id="ftcategories">
-  <? foreach($categories as $k=>$v){ print('<span class="ftcategories"><a href="index.php?category='.$k.'" class="ftcatlink">'.$v.'</a></span>'); } ?>
+	<? //if($categories->footerSectionCategories != NULL){ print($categories->footerSectionCategories); } ?>
+  <div id="footerSectionCategories">
+  <? foreach(Categories\Categories::CATEGORIES as $k=>$v){ print('<span class="footerSectionCategories"><a href="index.php?category='.$k.'" class="ftSecCatLink">'.$v.'</a></span>'); } ?>
   </div>
   
   <div class="footerClLine">
