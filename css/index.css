@@ -909,7 +909,7 @@ background-color: rgb(232,232,232); /* color gray91 */
 //background-color: rgb(255,238,178); /* color Cornsilk | Saturation 30%  */
 }
 
-#ftcategories
+#footerSectionCategories
 {
 position: relative;
 box-sizing: border-box;
@@ -920,7 +920,7 @@ clear: both;
 margin-bottom: 10px;
 }
 
-.ftcategories
+.footerSectionCategories
 {
 display: inline-block;
 box-sizing: border-box;
@@ -933,17 +933,17 @@ padding: 2px 0px 1px 4px;
 margin: 0px 2px 2px 0px;
 }
 
-.ftcategories:hover
+.footerSectionCategories:hover
 {
 background-color: rgb(255,227,127); /* color Cornsilk | Saturation 40%  */
 }
 
-.ftcatlink
+.ftSecCatLink
 {
 text-decoration: none;
 }
 
-.ftcatlink:hover
+.ftSecCatLink:hover
 {
 text-decoration: underline;
 font-weight: bold;
