@@ -56,11 +56,13 @@ if(isset($_POST['qdelete'])){ include "qdelete.php"; }
 
 if(isset($_GET['category'])){
   $cat = substr((string)$_GET['category'],0,17);
+	//print('$cat: '.$cat.'<br />');
   $cat = mb_strtolower($cat,'UTF-8');
-  $cat = preg_replace('/[^a-z]/i','',$cat);
+  $cat = preg_replace('/[^a-z\-]/i','',$cat);
   if(is_string($cat)){
 	if(isset(Categories\Categories::CATEGORIES[$cat])){
 	  $category = $cat;
+		//print('$category: '.$category.'<br />');
 	}
   }
 }
@@ -410,10 +412,7 @@ function fillInSubcategories(){
 	
   </div>
   
-	<? //if($categories->footerSectionCategories != NULL){ print($categories->footerSectionCategories); } ?>
-  <div id="footerSectionCategories">
-  <? foreach(Categories\Categories::CATEGORIES as $k=>$v){ print('<span class="footerSectionCategories"><a href="index.php?category='.$k.'" class="ftSecCatLink">'.$v.'</a></span>'); } ?>
-  </div>
+	<? if($categories->footerSectionCategories != NULL){ print($categories->footerSectionCategories); } ?>
   
   <div class="footerClLine">
     <div id="sitename">Questions and answers</div>
