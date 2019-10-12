@@ -54,6 +54,7 @@ if(isset($_POST['qdelete'])){ include "qdelete.php"; }
 
 }
 
+/*
 if(isset($_GET['category'])){
   $cat = substr((string)$_GET['category'],0,17);
 	//print('$cat: '.$cat.'<br />');
@@ -73,8 +74,21 @@ if(isset($_GET['subcategory'])){
   $subcat = mb_strtolower($subcat,'UTF-8');
   $subcat = preg_replace('/[^a-z-]/i','',$subcat);
   if(is_string($subcat)){
-  //if(isset($subcategories[$category][$subcat])){
   if(isset(Subcategories\Subcategories::SUBCATEGORIES[$category][$subcat])){
+	$subcategory = $subcat;
+  }
+  }
+}
+}
+*/
+
+if($categories->category != NULL){
+if(isset($_GET['subcategory'])){
+  $subcat = substr((string)$_GET['subcategory'],0,35);
+  $subcat = mb_strtolower($subcat,'UTF-8');
+  $subcat = preg_replace('/[^a-z-]/i','',$subcat);
+  if(is_string($subcat)){
+  if(isset(Subcategories\Subcategories::SUBCATEGORIES[$categories->category][$subcat])){
 	$subcategory = $subcat;
   }
   }
@@ -115,21 +129,23 @@ $startRow = $pageNumber * $perPage;
 $pagelink = '';
 if(isset($db)){
 try{
-if(isset($category) && isset($subcategory))
+//if(isset($category) && isset($subcategory))
+if($categories->category != NULL && isset($subcategory))
 {
-$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$category' and subcategorylink='$subcategory' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
+$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$categories->category' and subcategorylink='$subcategory' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
 $rowsNum = count($pnrow);
-$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$category' and subcategorylink='$subcategory' ORDER BY dt Desc LIMIT $startRow,$perPage;");
+$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$categories->category' and subcategorylink='$subcategory' ORDER BY dt Desc LIMIT $startRow,$perPage;");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
-$pagelink = '?category='.$category.'&subcategory='.$subcategory.'&page=';
+$pagelink = '?category='.$categories->category.'&subcategory='.$subcategory.'&page=';
 }
-elseif(isset($category))
+//elseif(isset($category))
+elseif($categories->category != NULL)
 {
-$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$category' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
+$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$categories->category' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
 $rowsNum = count($pnrow);
-$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$category' ORDER BY dt Desc LIMIT $startRow,$perPage;");
+$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$categories->category' ORDER BY dt Desc LIMIT $startRow,$perPage;");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
-$pagelink = '?category='.$category.'&page=';
+$pagelink = '?category='.$categories->category.'&page=';
 }
 else
 {
@@ -321,17 +337,17 @@ function fillInSubcategories(){
 
   <div id="MBCatHistory">
   <a href="index.php" id="MBAllCat" class="MBCatElem">Main page</a>
-	<? if(isset($category)){ if($category == 'other'){ ?>
-	<span>> </span><span><? print($categories[$category]); ?></span>
+	<? if($categories->category != NULL){ if($categories->category == 'other'){ ?>
+	<span>> </span><span><? print($categories->category); ?></span>
 	<? }else{ ?>
-	<span>> </span><a href="index.php?category=<? print($category); ?>" class="MBCatElem"><? print(Categories\Categories::CATEGORIES[$category]); ?></a>
+	<span>> </span><a href="index.php?category=<? print($categories->category); ?>" class="MBCatElem"><? print(Categories\Categories::CATEGORIES[$categories->category]); ?></a>
 	<? }} ?>
 	<? if(isset($subcategory)){ ?>
-	<span>> </span><span><? print(Subcategories\Subcategories::SUBCATEGORIES[$category][$subcategory]); ?></span>
+	<span>> </span><span><? print(Subcategories\Subcategories::SUBCATEGORIES[$categories->category][$subcategory]); ?></span>
 	<? } ?>
   </div>
   
-  <div id="MBSubcategories"><? if(isset($category)){ fillInSubcategories(); } ?></div>
+	<? if($subcategories->subcategoriesSection != NULL){ print($subcategories->subcategoriesSection); } ?>
   
   <div id="middleBlock">
 	
