@@ -16,7 +16,9 @@ try{ include "db/db.php"; }
 catch(Exception $e){ $dberr = $e->getMessage()."<br />"; }
 
 include_once "categories.php";
+use Categories as CatNS;
 include_once "subcategories.php";
+use Subcategories as SubcatNS;
 include_once "indexpageelements.php";
 
 if(isset($_POST['aentbt'])){ include "aauth.php"; }
@@ -55,33 +57,6 @@ if(isset($_POST['qdelete'])){ include "qdelete.php"; }
 }
 
 /*
-if(isset($_GET['category'])){
-  $cat = substr((string)$_GET['category'],0,17);
-	//print('$cat: '.$cat.'<br />');
-  $cat = mb_strtolower($cat,'UTF-8');
-  $cat = preg_replace('/[^a-z\-]/i','',$cat);
-  if(is_string($cat)){
-	if(isset(Categories\Categories::CATEGORIES[$cat])){
-	  $category = $cat;
-		//print('$category: '.$category.'<br />');
-	}
-  }
-}
-
-if(isset($category)){
-if(isset($_GET['subcategory'])){
-  $subcat = substr((string)$_GET['subcategory'],0,35);
-  $subcat = mb_strtolower($subcat,'UTF-8');
-  $subcat = preg_replace('/[^a-z-]/i','',$subcat);
-  if(is_string($subcat)){
-  if(isset(Subcategories\Subcategories::SUBCATEGORIES[$category][$subcat])){
-	$subcategory = $subcat;
-  }
-  }
-}
-}
-*/
-
 if($categories->category != NULL){
 if(isset($_GET['subcategory'])){
   $subcat = substr((string)$_GET['subcategory'],0,35);
@@ -94,6 +69,7 @@ if(isset($_GET['subcategory'])){
   }
 }
 }
+*/
 
 $tenRow = 0;
 $pageNumber = 0;
@@ -129,30 +105,28 @@ $startRow = $pageNumber * $perPage;
 $pagelink = '';
 if(isset($db)){
 try{
-//if(isset($category) && isset($subcategory))
-if($categories->category != NULL && isset($subcategory))
+if($categories->category != NULL && $subcategories->subcategory != NULL)
 {
-$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$categories->category' and subcategorylink='$subcategory' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
+$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='".$categories->category."' and subcategorylink='".$subcategories->subcategory."' LIMIT ".$rowFrom.",".$rowsLimit.";")->fetchAll(PDO::FETCH_NUM);
 $rowsNum = count($pnrow);
-$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$categories->category' and subcategorylink='$subcategory' ORDER BY dt Desc LIMIT $startRow,$perPage;");
+$qresult = $db->query("SELECT * FROM questions WHERE categorylink='".$categories->category."' and subcategorylink='".$subcategories->subcategory."' ORDER BY dt Desc LIMIT ".$startRow.",".$perPage.";");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
-$pagelink = '?category='.$categories->category.'&subcategory='.$subcategory.'&page=';
+$pagelink = '?category='.$categories->category.'&subcategory='.$subcategories->subcategory.'&page=';
 }
-//elseif(isset($category))
 elseif($categories->category != NULL)
 {
-$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='$categories->category' LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
+$pnrow = $db->query("SELECT id FROM questions WHERE categorylink='".$categories->category."' LIMIT ".$rowFrom.",".$rowsLimit.";")->fetchAll(PDO::FETCH_NUM);
 $rowsNum = count($pnrow);
-$qresult = $db->query("SELECT * FROM questions WHERE categorylink='$categories->category' ORDER BY dt Desc LIMIT $startRow,$perPage;");
+$qresult = $db->query("SELECT * FROM questions WHERE categorylink='".$categories->category."' ORDER BY dt Desc LIMIT ".$startRow.",".$perPage.";");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
 $pagelink = '?category='.$categories->category.'&page=';
 }
 else
 {
-$pnrow = $db->query("SELECT id FROM questions LIMIT $rowFrom,$rowsLimit;")->fetchAll(PDO::FETCH_NUM);
+$pnrow = $db->query("SELECT id FROM questions LIMIT ".$rowFrom.",".$rowsLimit.";")->fetchAll(PDO::FETCH_NUM);
 $rowsNum = count($pnrow);
 //print('$rowsNum: '.$rowsNum.'<br />');
-$qresult = $db->query("SELECT * FROM questions ORDER BY dt Desc LIMIT $startRow,$perPage;");
+$qresult = $db->query("SELECT * FROM questions ORDER BY dt Desc LIMIT ".$startRow.",".$perPage.";");
 //print('$qresult: '); var_dump($qresult); print('<br />');
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
 //print('$qrow: '); var_dump($qrow); print('<br />');
@@ -216,16 +190,6 @@ $nextten = $tenRow+11;
 //print('$nextten: '.$nextten.'<br/ >');
 $prevten = $tenRow-9;
 //print('$prevten: '.$prevten.'<br/ >');
-
-// функция заполнения diva субкатегориями после выбора категории
-function fillInSubcategories(){
-  global $category; global $subcategories;
-  if(isset($category) && $category != 'other')
-  //foreach($subcategories[$category] as $k=>$v)
-  foreach(Subcategories\Subcategories::SUBCATEGORIES[$category] as $k=>$v)
-  { print('<span class="subcategories"><a href="index.php?category='.$category.'&subcategory='.$k.'" class="categorieslink">'.$v.'</a></span>'); }
-}
-
 
 //$_SESSION['euser'] = true; $_SESSION['uid'] = 194290693; $_SESSION['fname'] = 'Олег'; $_SESSION['lname'] = 'Шевченко'; $_SESSION['utype'] = 'vk'; $_SESSION['uphoto'] = 'uimages/vk50.jpg';
 //$_SESSION['euser'] = true; $_SESSION['uid'] = 222; $_SESSION['fname'] = 'Admin'; $_SESSION['lname'] = 'AdminLN'; $_SESSION['utype'] = 'admin'; $_SESSION['uphoto'] = 'uimages/admin.jpg';
@@ -340,10 +304,10 @@ function fillInSubcategories(){
 	<? if($categories->category != NULL){ if($categories->category == 'other'){ ?>
 	<span>> </span><span><? print($categories->category); ?></span>
 	<? }else{ ?>
-	<span>> </span><a href="index.php?category=<? print($categories->category); ?>" class="MBCatElem"><? print(Categories\Categories::CATEGORIES[$categories->category]); ?></a>
+	<span>> </span><a href="index.php?category=<? print($categories->category); ?>" class="MBCatElem"><? print(CatNS\Categories::CATEGORIES[$categories->category]); ?></a>
 	<? }} ?>
-	<? if(isset($subcategory)){ ?>
-	<span>> </span><span><? print(Subcategories\Subcategories::SUBCATEGORIES[$categories->category][$subcategory]); ?></span>
+	<? if($subcategories->subcategory != NULL){ ?>
+	<span>> </span><span><? print(SubcatNS\Subcategories::SUBCATEGORIES[$categories->category][$subcategories->subcategory]); ?></span>
 	<? } ?>
   </div>
   
