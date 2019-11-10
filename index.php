@@ -16,10 +16,11 @@ try{ include "db/db.php"; }
 catch(Exception $e){ $dberr = $e->getMessage()."<br />"; }
 
 include_once "categories.php";
-use Categories as CatNS;
 include_once "subcategories.php";
-use Subcategories as SubcatNS;
 include_once "indexpageelements.php";
+use Categories as CatNS;
+use Subcategories as SubcatNS;
+use IndexPageElements as IndexPgElNS;
 
 if(isset($_POST['aentbt'])){ include "aauth.php"; }
 if(isset($_SESSION['euser']) && $_SESSION['euser'] == true){
@@ -111,6 +112,7 @@ $pnrow = $db->query("SELECT id FROM questions WHERE categorylink='".$categories-
 $rowsNum = count($pnrow);
 $qresult = $db->query("SELECT * FROM questions WHERE categorylink='".$categories->category."' and subcategorylink='".$subcategories->subcategory."' ORDER BY dt Desc LIMIT ".$startRow.",".$perPage.";");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
+//print('$qrow: '); var_dump($qrow); print('<br />');
 $pagelink = '?category='.$categories->category.'&subcategory='.$subcategories->subcategory.'&page=';
 }
 elseif($categories->category != NULL)
@@ -119,6 +121,7 @@ $pnrow = $db->query("SELECT id FROM questions WHERE categorylink='".$categories-
 $rowsNum = count($pnrow);
 $qresult = $db->query("SELECT * FROM questions WHERE categorylink='".$categories->category."' ORDER BY dt Desc LIMIT ".$startRow.",".$perPage.";");
 $qrow = $qresult->fetchAll(PDO::FETCH_ASSOC);
+//print('$qrow: '); var_dump($qrow); print('<br />');
 $pagelink = '?category='.$categories->category.'&page=';
 }
 else
@@ -290,26 +293,16 @@ $prevten = $tenRow-9;
     <div id="LBAdv3"></div>
   </div>
   
-	<? if(MiddleBlockMainButtons::$sectionFirstPart != NULL){ print(MiddleBlockMainButtons::$sectionFirstPart); } ?>
-		<? if(MiddleBlockMainButtons::$categoriesButton != NULL){ print(MiddleBlockMainButtons::$categoriesButton); } ?>
-    <? if(MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(MiddleBlockMainButtons::$askAQuestionButton); } ?>
-	<? if(MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(MiddleBlockMainButtons::$sectionSecondPart); } ?>
+	<? if(IndexPgElNS\MiddleBlockMainButtons::$sectionFirstPart != NULL){ print(IndexPgElNS\MiddleBlockMainButtons::$sectionFirstPart); } ?>
+		<? if(IndexPgElNS\MiddleBlockMainButtons::$categoriesButton != NULL){ print(IndexPgElNS\MiddleBlockMainButtons::$categoriesButton); } ?>
+    <? if(IndexPgElNS\MiddleBlockMainButtons::$askAQuestionButton != NULL){ print(IndexPgElNS\MiddleBlockMainButtons::$askAQuestionButton); } ?>
+	<? if(IndexPgElNS\MiddleBlockMainButtons::$sectionSecondPart != NULL){ print(IndexPgElNS\MiddleBlockMainButtons::$sectionSecondPart); } ?>
   
 	<? if($categories->topSectionCategories != NULL){ print($categories->topSectionCategories); } ?>
   
   <? if(!isset($_SESSION['euser'])){ ?><div id="aaqmsg"></div><? } ?>
-
-  <div id="MBCatHistory">
-  <a href="index.php" id="MBAllCat" class="MBCatElem">Main page</a>
-	<? if($categories->category != NULL){ if($categories->category == 'other'){ ?>
-	<span>> </span><span><? print($categories->category); ?></span>
-	<? }else{ ?>
-	<span>> </span><a href="index.php?category=<? print($categories->category); ?>" class="MBCatElem"><? print(CatNS\Categories::CATEGORIES[$categories->category]); ?></a>
-	<? }} ?>
-	<? if($subcategories->subcategory != NULL){ ?>
-	<span>> </span><span><? print(SubcatNS\Subcategories::SUBCATEGORIES[$categories->category][$subcategories->subcategory]); ?></span>
-	<? } ?>
-  </div>
+	
+	<? if(IndexPgElNS\IndexPageRoute::$route != NULL){ print(IndexPgElNS\IndexPageRoute::$route); } ?>
   
 	<? if($subcategories->subcategoriesSection != NULL){ print($subcategories->subcategoriesSection); } ?>
   
