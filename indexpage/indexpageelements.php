@@ -116,6 +116,23 @@ class MBQuestionBlock
 
 MBQuestionBlock::constructImitation();
 
+class Footer
+{
+	public static $footer = NULL;
+	
+	private static function createFooter(){
+		self::$footer = '<div id="footer">';
+		self::$footer .= '<div id="footerSiteName">Questions and answers</div>';
+		self::$footer .= '</div>';
+	}
+	
+	final public static function construct(){
+		self::createFooter();
+	}
+}
+
+Footer::construct();
+
 }
 
 ?>
